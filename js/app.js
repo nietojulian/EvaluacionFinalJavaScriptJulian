@@ -5,11 +5,11 @@ var Calculadora =
   // Inicializar
 	init: function()
   {
-		this.asignarEventoBtn('teclado')
+		this.eventoBoton('teclado')
 	},
 
   //Metodos
-	asignarEventoBtn: function(selectKey)
+	eventoBoton: function(selectKey)
   {
 		var teclas = document.querySelectorAll('.' + selectKey + ' img')
 		for(i=0;i<teclas.length;i++)
@@ -50,8 +50,22 @@ var Calculadora =
       case 'sign':
         adicionaSigno();
       break;
+      case 'mas':
+        suma();
+      break;
+      case 'menos':
+        resta();
+      break;
+      case 'por':
+        multiplica();
+      break;
+      case 'dividido':
+        divide();
+      break;
+      case 'igual':
+        igual();
+      break;
     }
-
 	}
 }
 
@@ -88,7 +102,7 @@ function printKey(key)
 function limpiavisor(){
 	var visor = document.getElementById('display')
 	visor.innerHTML = "0"
-  Calculadora.cadena = ""
+  Calculadora.texto = ""
 }
 
 //funcion para agregar el caracter punto
@@ -118,5 +132,116 @@ function adicionaSigno()
   {
 		visor.innerHTML = "-" + visor.innerHTML
 	}
+}
+
+//Funcion para sumar
+function suma()
+{
+	if(Calculadora.texto == 'calc')
+  {
+		Calculadora.texto = ""
+		Calculadora.operacion = "null"
+	}
+	if(Calculadora.operacion == "null")
+  {
+		Calculadora.texto = document.getElementById('display').innerHTML
+		Calculadora.operacion = "+"
+	}
+  else
+  {
+		Calculadora.texto = Calculadora.texto + Calculadora.operacion + document.getElementById('display').innerHTML
+		Calculadora.operacion = "+"
+	}
+	document.getElementById('display').innerHTML = ""
+}
+
+//Funcion para restar
+function resta()
+{
+	if(Calculadora.texto == 'calc')
+  {
+		Calculadora.texto = ""
+		Calculadora.operacion = "null"
+	}
+	if(Calculadora.operacion == "null")
+  {
+		Calculadora.texto = document.getElementById('display').innerHTML
+		Calculadora.operacion = "-"
+	}
+  else
+  {
+		Calculadora.texto = Calculadora.texto + Calculadora.operacion + document.getElementById('display').innerHTML
+		Calculadora.operacion = "-"
+	}
+	document.getElementById('display').innerHTML = ""
+}
+
+//Funcion para multiplicar
+function multiplica()
+{
+	if(Calculadora.texto == 'calc')
+  {
+		Calculadora.texto = ""
+		Calculadora.operacion = "null"
+	}
+	if(Calculadora.operacion == "null")
+  {
+		Calculadora.texto = document.getElementById('display').innerHTML
+		Calculadora.operacion = "*"
+	}
+  else
+  {
+		Calculadora.texto = Calculadora.texto + Calculadora.operacion + document.getElementById('display').innerHTML
+		Calculadora.operacion = "*"
+	}
+	document.getElementById('display').innerHTML = ""
+}
+
+//Funcion para dividir
+function divide()
+{
+	if(Calculadora.texto == 'calc')
+  {
+		Calculadora.texto = ""
+		Calculadora.operacion = "null"
+	}
+	if(Calculadora.operacion == "null")
+  {
+		Calculadora.texto = document.getElementById('display').innerHTML
+		Calculadora.operacion = "/"
+	}
+  else
+  {
+		Calculadora.texto = Calculadora.texto + Calculadora.operacion + document.getElementById('display').innerHTML
+		Calculadora.operacion = "/"
+	}
+	document.getElementById('display').innerHTML = ""
+}
+
+//Funcion para generar el resultado
+function igual()
+{
+	if(Calculadora.texto == "")
+  {
+		document.getElementById('display').innerHTML = "0"
+	}
+  else if(Calculadora.texto == 'calc')
+  {
+		Calculadora.texto = document.getElementById('display').innerHTML + Calculadora.ultimaOperacion
+		document.getElementById('display').innerHTML = actualizarResultado()
+		Calculadora.texto = 'calc'
+	}
+  else
+  {
+		Calculadora.texto = Calculadora.texto + Calculadora.operacion + document.getElementById('display').innerHTML
+		Calculadora.ultimaOperacion = Calculadora.operacion + document.getElementById('display').innerHTML
+		document.getElementById('display').innerHTML = generaResultado()
+		Calculadora.texto = 'calc'
+	}
+}
+function generaResultado(){
+	resGenerado = 0
+	resGenerado = eval(Calculadora.texto)
+	return resGenerado
 }
 Calculadora.init()
